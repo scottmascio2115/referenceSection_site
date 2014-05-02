@@ -1,0 +1,30 @@
+.container{
+}
+
+
+h1{
+  text-align:center;
+}
+
+li {
+  list-style-type: none;
+  margin-left: 150px;
+}
+
+h5 {
+  border: 1px solid white;
+  background-color: lightgrey;
+  color: black;
+  border-radius: 25px;
+  padding: 5px;
+  position: absolute;
+  clear: both;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.list ul li {
+  text-align: left;
+  margin-left: 0px;
+}
