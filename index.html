@@ -13,7 +13,7 @@
 
 <body>
     <div class='container'>
-        <h1> referenceSection();<small> v1.1.3</small></h1>
+        <h1> referenceSection();<small> v2.0.0</small></h1>
         <hr>
       <div class='list'>
         <ul class="nav nav-pills pull-left">
@@ -34,6 +34,10 @@
         <p>2. Include a 'data-info' attribute in each element, this will hold the description that will be shown in the reference section and when a user hover's over the superscript.</p>
           <pre><code>
             &lt;a class='rs' href='http://www.neo.com/' data-info="Neo delivers exceptional software with robust engineering."&gt;Neo&lt;/a&lt;
+
+            or
+
+            &lt;span class='rs' data-info="Founding father of the US"&gt;Ben Franklin&lt;/span&gt;
           </pre></code>
         <p>3. Activate the plugin. </p>
         <pre><code>
@@ -57,64 +61,69 @@
       <div class='container'>
       <div id="code">
         <pre><code>
-          (function($){
-            $.fn.referenceSection = function() {
+            (function($){
+              $.fn.referenceSection = function() {
 
-              function info_dom(info, index) {
-                var description = info.description === undefined ? 'Description Not Found': info.description;
-                var href = info.href;
+                function info_dom(info, index) {
+                  var description = present(info.description) ? 'Description Not Found': info.description;
+                  var label = present(info.href) ? info.text: info.href;
 
-                var li = $('&lt;li&gt;', { id:index, text: " " + href +': '});
-                var dom = li.append(description);
-                var a = $('&lt;a&gt;', { href: '#' +index+ 'b'});
-                var super_script = $('&lt;sup&gt;', { text: '[' +index+ ']'});
+                  var li = $('&lt;li&gt;', { id:index, text: " " + label +': '});
+                  var dom = li.append(description);
+                  var a = $('&lt;a&gt;', { href: '#' +index+ 'b'});
+                  var super_script = $('&lt;sup&gt;', { text: '[' +index+ ']'});
 
-                a.append(super_script);
-                dom.prepend(a);
+                  a.append(super_script);
+                  dom.prepend(a);
 
-                return dom;
-              };
+                  return dom;
+                };
 
-              function info_attachment(info){
-                var attachment;
+                function info_attachment(info){
+                  var attachment;
 
-                if ( info !== undefined && info !== null ) {
-                  attachment = $('&lt;h5&gt;', { text: info });
-                }
-                return attachment;
-              };
+                  if ( !present(info)) {
+                    attachment = $('&lt;h5&gt;', { text: info });
+                  }
+                  return attachment;
+                };
 
-              var i = 1
+                function present(val){
+                  return val === undefined || val === null
+                };
 
-              this.find( ".rs" ).each(function() {
-                var aTag = $('&lt;a&gt;', { href: "#"+i });
-                var supTag = $('&lt;sup&gt;', { id: i+ "b", text: "[" +i+ "]"});
-                aTag.append(supTag);
-                $(this).after(aTag);
+                var i = 1
 
-                info = { href: $(this).attr("href"), description: $( this).data('info')}
-                var dom = info_dom(info, i);
-                $( "body").append(dom);
+                this.find( ".rs" ).each(function() {
+                  var aTag = $('&lt;a&gt;', { href: "#"+i });
+                  var supTag = $('&lt;sup&gt;', { id: i+ "b", text: "[" +i+ "]"});
+                  aTag.append(supTag);
+                  $(this).after(aTag);
 
-                ++i;
+                  info = { href: $(this).attr('href'), description: $( this).data('info'), text: $(this).text()}
+                  var dom = info_dom(info, i);
+                  $( "body").append(dom);
+
+                  ++i;
+                });
+
+                $("sup").hover(
+                  function() {
+                  var parents_sibling = $( this).parent().prev();
+                  var data = parents_sibling.data('info');
+                  var attachment = info_attachment(data);
+                  $(this).append(attachment);
+
+                },function() {
+                  $( this ).find( "h5:last" ).remove();
+                });
+                return this;
+              };}(jQuery));
+
+              $( document ).ready(function() {
+                $("body").referenceSection();
               });
 
-              $("sup").hover(
-                function() {
-                var parents_sibling = $( this).parent().prev('a');
-                var data = parents_sibling.data('info');
-                var attachment = info_attachment(data);
-                $(this).append(attachment);
-
-              },function() {
-                $( this ).find( "h5:last" ).remove();
-              });
-              return this;
-            };}(jQuery));
-
-            $( document ).ready(function() {
-              $("body").referenceSection();
-            });
         </code></pre>
       </div>
       </div>
@@ -127,7 +136,7 @@
         <h3>Example use of referenceSection();</h3>
         <a class="btn btn-large btn-danger" id='activate' >Apply Plugin to Paragraph</a>
         <p>
-          Nullam euismod tristique tortor <a class='rs' href='http://www.neo.com/' data-info="We turn vision into reality, delivering exceptional software with robust engineering, lean thinking and delightful design.">Neo</a> ut pulvinar. Suspendisse id lacus in purus dapibus egestas at et ipsum. Donec accumsan quam leo, viverra aliquam massa pharetra eget. Nulla <a class='rs' href='http://grantland.com/' data-info="Sports and entertainment blog site">Grantland</a> laoreet nunc ornare lacus pretium lacinia. Pellentesque iaculis dictum est eget pulvinar. Nam in gravida  <a class='rs' href='https://www.yahoo.com/'>Yahoo</a> nibh, ut bibendum sem. Nam pulvinar suscipit justo ut porttitor. Pellentesque habitant morbi tristique<a class='rs' href='https://www.bloomberg.com/' data-info="The leading source for financial news">Bloomberg</a> senectus et netus et malesuada fames ac turpis egestas. Duis tempus, orci non malesuada feugiat, <a class='rs' href='https://www.google.com/' data-info="Search engine">Google</a> sem nisl facilisis elit, id tincidunt magna ipsum vel felis. Nulla lacinia sem a metus egestas sagittis. Ut placerat pretium augue eu semper. Mauris fermentum  <a class='rs' href='http://espn.go.com/' data-info="24 hour sports highlight channel">Espn</a> sodales arcu nec tincidunt. Maecenas quam orci, mattis sed vehicula vitae, pharetra vel libero. Curabitur vel metus sit amet dolor semper viverra eget sit amet lorem.
+          <span class='rs' data-info="Founding father of the US">Ben Franklin</span> Nullam euismod tristique tortor <a class='rs' href='http://www.neo.com/' data-info="We turn vision into reality, delivering exceptional software with robust engineering, lean thinking and delightful design.">Neo</a> ut pulvinar. Suspendisse id lacus in purus dapibus egestas at et ipsum. Donec accumsan quam leo, viverra aliquam massa pharetra eget. Nulla <a class='rs' href='http://grantland.com/' data-info="Sports and entertainment blog site">Grantland</a> laoreet nunc ornare lacus pretium lacinia. Pellentesque iaculis dictum est eget pulvinar. Nam in gravida  <a class='rs' href='https://www.yahoo.com/'>Yahoo</a> nibh, ut bibendum sem. Nam pulvinar suscipit justo ut porttitor. Pellentesque habitant morbi tristique<a class='rs' href='https://www.bloomberg.com/' data-info="The leading source for financial news">Bloomberg</a> senectus et netus et malesuada fames ac turpis egestas. Duis tempus, orci non malesuada feugiat, <a class='rs' href='https://www.google.com/' data-info="Search engine">Google</a> sem nisl facilisis elit, id tincidunt magna ipsum vel felis. Nulla lacinia sem a metus egestas sagittis. Ut placerat pretium augue eu semper. Mauris fermentum  <a class='rs' href='http://espn.go.com/' data-info="24 hour sports highlight channel">Espn</a> sodales arcu nec tincidunt. Maecenas quam orci, mattis sed vehicula vitae, pharetra vel libero. Curabitur vel metus sit amet dolor semper viverra eget sit amet lorem.
         </p>
     </div>
   </div>
