@@ -27,11 +27,16 @@
       <div id="getting_started">
         <hr>
         <h3>Getting Started</h3>
-        <p>1. Determine which elements you are going to put in the reference section. Give those elements a class of '.rs'</p>
+        <p>1. Download and Include jQuery and .referenceSection(); plugin</p>
+          <pre><code>
+            &lt;script src="jquery-1.11.0.min.js"&gt;&lt;/script&gt;
+            &lt;script src="jquery.referencesection.min.js"&gt;&lt;/script&gt;
+          </pre></code>
+        <p>2. Determine which elements you are going to put in the reference section. Give those elements a class of '.rs'</p>
           <pre><code>
             &lt;a class='rs' href='http://www.neo.com/'&gt;Neo&lt;/a&gt;
           </pre></code>
-        <p>2. Include a 'data-info' attribute in each element, this will hold the description that will be shown in the reference section and when a user hover's over the superscript.</p>
+        <p>3. Include a 'data-info' attribute in each element, this will hold the description that will be shown in the reference section and when a user hover's over the superscript.</p>
           <pre><code>
             &lt;a class='rs' href='http://www.neo.com/' data-info="Neo delivers exceptional software with robust engineering."&gt;Neo&lt;/a&lt;
 
@@ -39,7 +44,7 @@
 
             &lt;span class='rs' data-info="Founding father of the US"&gt;Ben Franklin&lt;/span&gt;
           </pre></code>
-        <p>3. Activate the plugin. </p>
+        <p>4. Activate the plugin. </p>
         <pre><code>
             $( document ).ready(function() {
               $("body").referenceSection();
